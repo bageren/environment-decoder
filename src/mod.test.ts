@@ -2,15 +2,15 @@ import {
   assertEquals,
   assertThrows,
 } from "https://deno.land/std@0.211.0/assert/mod.ts";
-import { describe, it } from "https://deno.land/std@0.211.0/testing/bdd.ts";
 import {
-  asBoolean,
-  asNumber,
-  asNumberUnion,
-  asString,
-  asStringUnion,
-  decodeEnvironment,
-} from "./mod.ts";
+  describe,
+  it,
+  beforeEach,
+} from "https://deno.land/std@0.211.0/testing/bdd.ts";
+import { decodeEnvironment } from "./mod.ts";
+import { asString, asStringUnion } from "./as_string.ts";
+import { asBoolean } from "./as_boolean.ts";
+import { asNumberUnion, asNumber } from "./as_number.ts";
 
 const decodeEnvironmentWrapper =
   (schema: Parameters<typeof decodeEnvironment>[0]) => () =>
@@ -26,6 +26,8 @@ describe("environmentDecoder", () => {
       }),
       `Decoder errors: \nBEER: allowed strings are Budweiser, Heineken, Corona, got Coca Cola`
     );
+
+    Deno.env.delete("BEER");
   });
 
   it("should not throw error if environment variable contains allowed value for asStringUnion", () => {
@@ -34,6 +36,8 @@ describe("environmentDecoder", () => {
     decodeEnvironment({
       BEER: asStringUnion("Budweiser", "Heineken", "Corona"),
     });
+
+    Deno.env.delete("BEER");
   });
 
   it("should throw error if environment variable contains disallowed value for asNumberUnion", () => {
@@ -45,6 +49,8 @@ describe("environmentDecoder", () => {
       }),
       `Decoder errors: \nWORLD_WAR: allowed numbers are 1, 2, got 3`
     );
+
+    Deno.env.delete("WORLD_WAR");
   });
 
   it("should not throw error if environment variable contains allowed value for asNumberUnion", () => {
@@ -53,6 +59,8 @@ describe("environmentDecoder", () => {
     decodeEnvironment({
       WORLD_WAR: asNumberUnion(1, 2),
     });
+
+    Deno.env.delete("WORLD_WAR");
   });
 
   it("withDefault", () => {
@@ -97,6 +105,9 @@ describe("environmentDecoder", () => {
       }),
       'Decoder errors: \nAGE: value "not a number" cannot be cast to number\nYEAR: value "not a number" cannot be cast to number'
     );
+
+    Deno.env.delete("AGE");
+    Deno.env.delete("YEAR");
   });
 
   it("should throw error when variable is not a valid boolean for asBoolean", () => {
@@ -108,5 +119,17 @@ describe("environmentDecoder", () => {
       }),
       'Decoder errors: \nIS_COOL: value "not valid" cannot be cast to boolean'
     );
+
+    Deno.env.delete("IS_COOL");
+  });
+
+  it("should not throw error when using optional", () => {
+    decodeEnvironment({
+      GAME: asString.optional,
+      MOVIE: asStringUnion("Batman Begins", "Inception").optional,
+      AGE: asNumber.optional,
+      YEAR: asNumberUnion(1994, 2023).optional,
+      IS_COOL: asBoolean.optional,
+    });
   });
 });
