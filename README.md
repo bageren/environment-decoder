@@ -2,6 +2,8 @@
 
 Deno package to decode environment variables.
 
+Based on https://www.npmjs.com/package/environment-decoder.
+
 ## Usage
 
 Import the `decodeEnvironment` function and call it with an object that defines which decoder to use for each of your environment variables. For example:
@@ -13,7 +15,7 @@ import {
   asString,
   asNumber,
   asStringUnion,
-} from "https://deno.land/x/environment-decoder";
+} from "https://deno.land/x/environment_decoder/mod.ts";
 
 const myEnv = decodeEnvironment({
   BASE_URL: asString, // myEnv.BASE_URL will have type 'string'
