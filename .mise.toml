@@ -1,0 +1,7 @@
+[tools]
+deno = "1.41.0"
+
+[tasks."test"]
+description = "Run test"
+run = "deno test --allow-env src/mod.test.ts"
+
