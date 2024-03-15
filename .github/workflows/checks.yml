@@ -12,3 +12,5 @@ jobs:
           experimental: true
       - name: Run tests
         run: mise r test
+      - name: Run check
+        run: mise r check
