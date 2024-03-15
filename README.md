@@ -29,6 +29,6 @@ const myEnv = decodeEnvironment({
 
 `environment-decoder` will throw an exception when:
 
-- environment variables are not set and not using `.withDefault()`
+- environment variables are not set and not using `.withDefault()` or `.optional`
 - environment variables cannot be cast to the requested type (for example, using `asNumber` on `abcde`)
 - using `asStringUnion` or `asNumberUnion` and the environment variable is not set to one of the allowed values
