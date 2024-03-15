@@ -20,7 +20,8 @@ const myEnv = decodeEnvironment({
   ENVIRONMENT: asStringUnion("dev", "qa", "prod"), // myEnv.ENVIRONMENT will have type '"dev" | "qa" | "prod"'
   PORT: asNumber, // myEnv.PORT will have type 'number'
   FEATURE_FLAG: asBoolean, // myEnv.FEATURE_FLAG will have type 'boolean'
-  OPTIONAL_FLAG: asString.withDefault("OPTION_1"), // use `.withDefault()` to set default values for non-required environment variables.
+  WITH_DEFAULT: asString.withDefault("defaultOption"), // use `.withDefault()` to set default values for optional environment variables
+  OPTIONAL: asString.optional, // use `.optional` or `.withDefault(undefined)` to allow the environment variable to be undefined
 });
 ```
 
