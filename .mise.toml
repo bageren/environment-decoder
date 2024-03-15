@@ -3,5 +3,9 @@ deno = "1.41.0"
 
 [tasks."test"]
 description = "Run test"
-run = "deno test --allow-env src/mod.test.ts"
+run = "deno test --allow-env src/decode_environment.test.ts"
 
+
+[tasks."check"]
+description = "Run check"
+run = "deno check mod.ts"
